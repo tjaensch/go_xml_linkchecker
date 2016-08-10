@@ -121,6 +121,8 @@ func findBrokenHttpLinks(xmlFile string) {
 	for _, httpLink := range httpLinks {
 		var httpResponse []byte
 		var err error
+		// Replace "&amp;" with "&" in found links for curl to work better
+		httpLink = strings.Replace(httpLink, "&amp;", "&", -1)
 		cmdName := "curl"
 		cmdArgs := []string{"--head", httpLink, "--max-time", "10"}
 		if httpResponse, err = exec.Command(cmdName, cmdArgs...).Output(); err != nil {
